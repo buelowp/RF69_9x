@@ -51,39 +51,40 @@ bool RHEncryptedDriver::recv(uint8_t* buf, uint8_t* len)
 bool RHEncryptedDriver::send(const uint8_t* data, uint8_t len)
 {
     if (len > maxMessageLength())
-	return false;
+		return false;
     
     bool status = true;
-    int blockSize = _blockcipher.blockSize(); // Size of blocks used by encryption
+    size_t blockSize = _blockcipher.blockSize(); // Size of blocks used by encryption
 	
     if (len == 0) // PassThru
-	return _driver.send(data, len);
+		return _driver.send(data, len);
 
     if (_cipheringBlocks.blockSize != blockSize)
     {
-	// Cipher has changed it's block size
-	_cipheringBlocks.inputBlock = (uint8_t *)realloc(_cipheringBlocks.inputBlock, blockSize);
-	_cipheringBlocks.blockSize = blockSize;	
+		// Cipher has changed it's block size
+		_cipheringBlocks.inputBlock = (uint8_t *)realloc(_cipheringBlocks.inputBlock, blockSize);
+		_cipheringBlocks.blockSize = blockSize;	
     }
 	
     int max_message_length = maxMessageLength();
 #ifdef STRICT_CONTENT_LEN	
-    uint8_t nbBlocks = len / blockSize + 1; // How many blocks do we need for that message
+	uint8_t nbBlocks __attribute__((unused));
+    nbBlocks = len / blockSize + 1; // How many blocks do we need for that message
     uint8_t nbBpM = max_message_length + 1 / blockSize; // Max number of blocks per message
 #else
     uint8_t nbBlocks = (len - 1) / blockSize + 1; // How many blocks do we need for that message
     uint8_t nbBpM = max_message_length / blockSize; // Max number of blocks per message
 #endif	
-    int k = 0, j = 0; // k is block index, j is original message index
+    size_t k = 0, j = 0; // k is block index, j is original message index
 #ifndef ALLOW_MULTIPLE_MSG	
 #ifdef STRICT_CONTENT_LEN
-    for (k = 0; k < nbBpM && k * blockSize < len + 1; k++)
+    for (k = 0; k < nbBpM && (k * blockSize) < (size_t)(len + 1); k++)
 #else
     for (k = 0; k < nbBpM && k * blockSize < len; k++)
 #endif
     {
 	// k blocks in that message
-	int h = 0; // h is block content index
+	size_t h = 0; // h is block content index
 #ifdef STRICT_CONTENT_LEN
 	if (k == 0)
 	    _cipheringBlocks.inputBlock[h++] = len; // put in first byte of first block the message length

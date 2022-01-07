@@ -296,17 +296,17 @@ void RH_RF69::readFifo()
 // instance of RH_RF69.
 // 3 interrupts allows us to have 3 different devices
 #ifndef RH_RF69_IRQLESS
-void RH_INTERRUPT_ATTR RH_RF69::isr0()
+void RH_RF69::isr0()
 {
     if (_deviceForInterrupt[0])
 	_deviceForInterrupt[0]->handleInterrupt();
 }
-void RH_INTERRUPT_ATTR RH_RF69::isr1()
+void RH_RF69::isr1()
 {
     if (_deviceForInterrupt[1])
 	_deviceForInterrupt[1]->handleInterrupt();
 }
-void RH_INTERRUPT_ATTR RH_RF69::isr2()
+void RH_RF69::isr2()
 {
     if (_deviceForInterrupt[2])
 	_deviceForInterrupt[2]->handleInterrupt();

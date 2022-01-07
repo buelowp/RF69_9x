@@ -317,8 +317,8 @@ unzip develop.zip
 cd /tmp
 mkdir RadioHead
 cd RadioHead
-cp /usr/local/projects/arduino/libraries/RadioHead/*.h .
-cp /usr/local/projects/arduino/libraries/RadioHead/*.cpp .
+cp /usr/local/projects/arduino/libraries/RadioHead/.h .
+cp /usr/local/projects/arduino/libraries/RadioHead/.cpp .
 cp /usr/local/projects/arduino/libraries/RadioHead/examples/cc110/cc110_client/cc110_client.pde application.cpp
 \endcode
 - Edit application.cpp and comment out any \#include <SPI.h> so it looks like:
@@ -1171,7 +1171,9 @@ these examples and explanations and extend them to suit your needs.
     // 2nd-generation particle defines
     #define RH_PLATFORM RH_PLATFORM_STM32F2
   #endif
-  #define SPI_HAS_TRANSACTION
+  #ifndef SPI_HAS_TRANSACTION
+    #define SPI_HAS_TRANSACTION
+  #endif
 #elif (MPIDE>=150 && defined(ARDUINO))
   // Using ChipKIT Core on Arduino IDE
   #define RH_PLATFORM RH_PLATFORM_CHIPKIT_CORE
@@ -1370,6 +1372,10 @@ these examples and explanations and extend them to suit your needs.
  // TO BE DONE:
  #define ATOMIC_BLOCK_START
  #define ATOMIC_BLOCK_END
+#endif
+
+#ifndef TEENSYDUINO
+  #define TEENSYDUINO 0
 #endif
 
 ////////////////////////////////////////////////////
