@@ -4,6 +4,8 @@
 
 This is a port of the [RadioHead Packet Radio Library](http://www.airspayce.com/mikem/arduino/RadioHead/) version 1.89 for RF95/96/97/98 LoRa compatible radios.
 
+This fork adds support for the RF69HCW radios that communicate over SPI similar to the LoRa radio boards.
+
 ![Argon](images/server.jpg)
 
 Note that this only allows nearby RF9x LoRa radios to communicate with each other in point-to-point mode to send data packets. It does not allow the Xenon, for example, to establish a cloud connection over LoRa instead of Particle Mesh (Thread mesh, 6LoWPAN over 802.15.4).
